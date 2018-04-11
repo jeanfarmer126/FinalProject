@@ -4,3 +4,25 @@ block content
     .row.page-header
         .col-lg-12
             h1 Add a New Bid
+    .row
+      .col-xs-12.col-md-6
+        form.form-horizontal(action="/offering", method="get", role="form")
+          .form-group
+            label.col-xs-12.control-label(for="name") Name of Bidder
+            .col-xs-12.col-sm-10
+              input#name.form-control(name="name")
+          .form-group
+            label.col-xs-12.control-label(for="password") Password of Bidder
+            .col-xs-12.col-sm-10
+              input#password.form-control(password="password")
+          .form-group
+            label.col-xs-12.control-label(for="amount") Bid Amount ($USD)
+            .col-xs-12.col-sm-10
+              input#amount.form-control(amount="amount")
+          .form-group
+            label.col-xs-12.control-label(for="additional") Additional Information
+            .col-sm-10
+              textarea#additional.form-control(name="additional", rows="3")
+              p &nbsp;
+              button.btn.btn-primary.pull-right Send Bid
+              .col-xs-12.col-md-4
