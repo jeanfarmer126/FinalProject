@@ -4,3 +4,8 @@ block content
     .row.page-header
         .col-lg-12
             h1 Accept an Offering
+            form.form-horizontal(action='/offering', method="delete", role="form")
+                .form-group
+                    label.col-xs-10
+                        h1(style="margin:30px") Bid Amount: $5,000
+                        button.btn.btn-secondary.pull-right Accept Bid

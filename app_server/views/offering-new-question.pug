@@ -3,4 +3,9 @@ extends layout
 block content
     .row.page-header
         .col-lg-12
-            h1 Add a New Question
+            h1 Submit a Question
+            form.form-horizontal(action="/offering", method="post", role="form")
+                .form-group
+                    .col-sm-10 
+                        textarea#question.form-control(name="question", cols="30", rows="10")
+                button.btn.btn-secondary.pull-right Submit Question
