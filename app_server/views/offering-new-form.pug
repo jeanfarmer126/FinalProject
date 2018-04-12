@@ -4,3 +4,27 @@ block content
     .row.page-header
         .col-lg-12
             h1 Add a New Offering
+
+    form(action="#", method="post", role="form")
+        - if (error === "val")
+             .alert.alert-danger(role="alert") All fields required, please try again
+        .form-group
+            label(for='name')= 'Player Name: '
+            input.form-control(id='name', name='name')
+        .form-group
+            label(for='year')= 'Item Year: '
+            input.form-control(id='year', name='year')
+        .form-group
+            label(for='signed')= 'Signed: '
+            input.form-control(type='checkbox', name='signed', id='signed')
+            label(for='authentic')= 'Authentic: '
+            input.form-control(type='checkbox', name='authentic', id='authentic')
+            label(for='game_Worn')= 'Game Worn: '
+            input.form-control(type='checkbox', name='game_worn', id='game_worn')
+        .form-group
+            label(for='description')= 'Item Description: '
+            input.form-control(id='description', name='description')
+        .form-group
+            label(for='athlete_info')= 'Athlete Info: '
+            input.form-control(id='athlete_info', name='athlete_info')
+        button.btn.btn-secondary.pull-right(type='submit') Add

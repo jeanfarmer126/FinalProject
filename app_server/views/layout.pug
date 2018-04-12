@@ -4,18 +4,20 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    style
+      include /stylesheets/style.css
   body
-    nav.navbar.navbar-default
+    .nav.navbar.navbar-default
       .container-fluid
-        .navbar-header
-          a.navbar-brand(href='/') Fan Trader *** FIX
-        ul.nav.navbar-nav
-          li.active
+        #brand.navbar-brand Fan Trader
+        ul.navbar-nav
+          li.active.btn.btn-secondary
             a(href='/') Offerings
-          li
+          li.btn.btn-secondary
             a(href='/about/') About 
     .container
       block content
 
   script(src='/javascripts/jquery-3.3.1.min.js')
   script(src='/bootstrap/js/bootstrap.min.js')
+  

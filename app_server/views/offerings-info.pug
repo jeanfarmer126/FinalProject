@@ -1,9 +1,35 @@
 extends layout
 
 block content
-	.row.page-header
-		.col-lg-12
-			h1= title
-			a.btn.btn-default.pull-right(href='/offering/question/new') Add a New Question 
-			a.btn.btn-default.pull-right(href='/offering/bid') Bid on Offering
-			a.btn.btn-default.pull-right(href='/offering/accept') Accept Bid
+    .row.page-header
+        .col-lg-12
+            h1= title
+        h1.col-lg-12
+            span.badge.badge-default='[signed]'
+            span.badge.badge-default='[authentic]'
+            span.badge.badge-default='[game worn]'
+            span.badge.badge-default='[2015]'
+
+    div
+        p='Signed Jersey worn by John Wall in 2015'
+        p='John Wall is the starting PG for the Washington Wizards'
+
+    .row
+        .col-lg-12.offering-info
+            h2= 'Questions'
+            a.btn.btn-default.btn-secondary.pull-right(href='/offering/question/new') Add a New Question
+        ul
+            li='Are there any stains?' 
+
+    .row
+        .col-lg-12
+            h2= 'Past Bids'
+            ul
+                li='$80'
+                li='$100'
+
+    .row
+        .col-lg-12.offering-info
+            h2= 'Current Bid: $120'
+            a.btn.btn-default.btn-secondary.pull-right(href='/offering/bid') Bid on Offering
+            a.btn.btn-default.btn-secondary.pull-right(href='/offering/accept') Accept Bid

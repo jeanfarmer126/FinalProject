@@ -1,8 +1,60 @@
 body {
-  padding: 50px;
+  padding: 1rem;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.nav {
+     background-color: teal;
+     margin-bottom: 1rem;
+     border: solid 2px gray;
+     border-radius: 5px;
+}
+.nav li {
+    padding: 1rem;
+    margin: 1rem;
+}
+.nav li a {
+    color: yellow;
+}
+.navbar-nav {
+    flex-direction: row;
+    margin-bottom: 0;
+}
+#brand {
+    color: yellow;
+}
+
+/*responsive style for navbar!! */
+
+.btn {
+    color: yellow;
+}
+
+a {
+    color: teal;
+}
+
+.list-group-item {
+    margin: 1rem;
+    border-radius: 5px;
+    padding: 0px;
+}
+.list-group-item-header, .list-group-item-content {
+    padding: 1rem;
+}
+.list-group-item-header {
+    background-color: lightgray;
+}
+.page-btn {
+    float:right;
+    margin: 5px 0px;
+}
+
+.offering-info {
+    display: flex;
+    justify-content: space-between;
 }

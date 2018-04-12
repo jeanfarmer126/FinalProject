@@ -5,7 +5,7 @@ module.exports.offeringList = function(req, res){
 
 /* Detailed page of a single offering with navigation to other pages */
 module.exports.offeringDetail = function(req, res){
-    res.render('offerings-info', {title: 'Offer Detail'});
+    res.render('offerings-info', {title: 'Wizards John Wall'});
 };
 
 /* Page for adding a new offering with fields */
