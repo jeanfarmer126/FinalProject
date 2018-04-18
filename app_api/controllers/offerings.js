@@ -47,17 +47,17 @@ module.exports.addOffering = function (req, res) {
   offering.create({
     playerName: req.body.playerName,
     itemYear: req.body.itemYear,
-    signed: req.body.signed,
-    authentic: req.body.authentic,
-    gameWorn: req.obj.gameWorn,
+    signed: req.body.signed === '1',
+    authentic: req.body.authentic === '1',
+    gameWorn: req.body.gameWorn === '1',
     itemDescription: req.body.itemDescription,
-    athleteInfo: athleteInfo
+    athleteInfo: req.body.athleteInfo
   }, function(err, offering) {
     if (err) {
       console.log(err);
-      sendJSONresponse(res, 400, err);
+      sendJsonResponse(res, 400, err);
     } else {
-      sendJSONresponse(res, 201, offering);
+      sendJsonResponse(res, 201, offering);
     }
   });
 };
@@ -94,14 +94,14 @@ module.exports.addQuestion = function (req, res) {
       .exec(
         function(err, offering) {
           if (err) {
-            sendJSONresponse(res, 400, err);
+            sendJsonResponse(res, 400, err);
           } else {
             doAddQuestion(req, res, offering);
           }
         }
     );
   } else {
-    sendJSONresponse(res, 404, {
+    sendJsonResponse(res, 404, {
       "message": "Not found, offeringid required"
     });
   }
@@ -109,7 +109,7 @@ module.exports.addQuestion = function (req, res) {
 
 var doAddQuestion = function(req, res, offering) {
   if (!offering) {
-    sendJSONresponse(res, 404, "offeringid not found");
+    sendJsonResponse(res, 404, "offeringid not found");
   } else {
     newQuestion = question.create({
       questionText: req.body.questionText,
@@ -119,10 +119,10 @@ var doAddQuestion = function(req, res, offering) {
          offering.save(function(err, offering) {
             var thisQuestion;
             if (err) {
-              sendJSONresponse(res, 400, err);
+              sendJsonResponse(res, 400, err);
             } else {
               thisQuestion = offering.questions[offering.questions.length - 1];
-              sendJSONresponse(res, 201, thisQuestion);
+              sendJsonResponse(res, 201, thisQuestion);
             }
           });
     });
@@ -137,14 +137,14 @@ module.exports.addBid = function (req, res) {
       .exec(
         function(err, offering) {
           if (err) {
-            sendJSONresponse(res, 400, err);
+            sendJsonResponse(res, 400, err);
           } else {
             doAddBid(req, res, offering);
           }
         }
     );
   } else {
-    sendJSONresponse(res, 404, {
+    sendJsonResponse(res, 404, {
       "message": "Not found, offeringid required"
     });
   }
@@ -152,7 +152,7 @@ module.exports.addBid = function (req, res) {
 
 var doAddBid = function(req, res, offering) {
   if (!offering) {
-    sendJSONresponse(res, 404, "offeringid not found");
+    sendJsonResponse(res, 404, "offeringid not found");
   } else {
     newBid = bid.create({
       username: req.body.username,
@@ -164,10 +164,10 @@ var doAddBid = function(req, res, offering) {
          offering.save(function(err, offering) {
             var thisBid;
             if (err) {
-              sendJSONresponse(res, 400, err);
+              sendJsonResponse(res, 400, err);
             } else {
               thisBid = offering.bids[offering.bids.length - 1];
-              sendJSONresponse(res, 201, thisBid);
+              sendJsonResponse(res, 201, thisBid);
             }
           });
     });
@@ -176,7 +176,7 @@ var doAddBid = function(req, res, offering) {
 
 module.exports.answerQuestion = function (req, res) {
 if (!req.params.offeringid || !req.params.questionid) {
-    sendJSONresponse(res, 404, {
+    sendJsonResponse(res, 404, {
       "message": "Not found, offeringid and questionid are both required"
     });
     return;
@@ -188,32 +188,32 @@ if (!req.params.offeringid || !req.params.questionid) {
       function(err, offering) {
         var thisQuestion;
         if (!offering) {
-          sendJSONresponse(res, 404, {
+          sendJsonResponse(res, 404, {
             "message": "offeringid not found"
           });
           return;
         } else if (err) {
-          sendJSONresponse(res, 400, err);
+          sendJsonResponse(res, 400, err);
           return;
         }
         if (offering.questions && offering.questions.length > 0) {
           thisQuestion = offering.questions.id(req.params.questionid);
           if (!thisQuestion) {
-            sendJSONresponse(res, 404, {
+            sendJsonResponse(res, 404, {
               "message": "questionid not found"
             });
           } else {
             thisQuestion.answer = req.body.answer;
             offering.save(function(err, offering) {
               if (err) {
-                sendJSONresponse(res, 404, err);
+                sendJsonResponse(res, 404, err);
               } else {
-                sendJSONresponse(res, 200, thisQuestion);
+                sendJsonResponse(res, 200, thisQuestion);
               }
             });
           }
         } else {
-          sendJSONresponse(res, 404, {
+          sendJsonResponse(res, 404, {
             "message": "No question to update"
           });
         }
@@ -223,7 +223,7 @@ if (!req.params.offeringid || !req.params.questionid) {
 
 module.exports.acceptBid = function (req, res) {
 if (!req.params.offeringid || !req.params.bidid) {
-    sendJSONresponse(res, 404, {
+    sendJsonResponse(res, 404, {
       "message": "Not found, offeringid and bidid are both required"
     });
     return;
@@ -235,18 +235,18 @@ if (!req.params.offeringid || !req.params.bidid) {
       function(err, offering) {
         var thisBid;
         if (!offering) {
-          sendJSONresponse(res, 404, {
+          sendJsonResponse(res, 404, {
             "message": "offeringid not found"
           });
           return;
         } else if (err) {
-          sendJSONresponse(res, 400, err);
+          sendJsonResponse(res, 400, err);
           return;
         }
         if (offering.bids && offering.bids.length > 0) {
           thisBid = offering.bids.id(req.params.bidid);
-          if (!thisQuestion) {
-            sendJSONresponse(res, 404, {
+          if (!thisBid) {
+            sendJsonResponse(res, 404, {
               "message": "bidid not found"
             });
           } else {
@@ -254,14 +254,14 @@ if (!req.params.offeringid || !req.params.bidid) {
             offering.available = false;
             offering.save(function(err, offering) {
               if (err) {
-                sendJSONresponse(res, 404, err);
+                sendJsonResponse(res, 404, err);
               } else {
-                sendJSONresponse(res, 200, thisBid);
+                sendJsonResponse(res, 200, thisBid);
               }
             });
           }
         } else {
-          sendJSONresponse(res, 404, {
+          sendJsonResponse(res, 404, {
             "message": "No bid to accept"
           });
         }
