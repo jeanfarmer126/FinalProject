@@ -37,6 +37,8 @@ var buildOfferingList = function(req, res, results) {
       gameWorn: doc.gameWorn,
       itemDescription: doc.itemDescription,
       athleteInfo: doc.athleteInfo,
+      offererUser: doc.offererUser,
+      offererPass: doc.offererPass,
       _id: doc._id
     });
   });
@@ -51,7 +53,9 @@ module.exports.addOffering = function (req, res) {
     authentic: req.body.authentic === '1',
     gameWorn: req.body.gameWorn === '1',
     itemDescription: req.body.itemDescription,
-    athleteInfo: req.body.athleteInfo
+    athleteInfo: req.body.athleteInfo,
+    offererUser: req.body.offererUser,
+    offererPass: req.body.offererPass
   }, function(err, offering) {
     if (err) {
       console.log(err);

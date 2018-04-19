@@ -60,6 +60,12 @@ var offeringSchema = new mongoose.Schema({
     altheteInfo: {
         type: String
     },
+    offererUser: {
+        type: String
+    },
+    offererPass: {
+        type: String
+    },
     available: {
         type: Boolean,
         defualt: false
