@@ -59,6 +59,10 @@ a {
     justify-content: space-between;
 }
 
+.question {
+  padding: 5px;
+}
+
 .form-group {
     background-color: lightgrey;
     padding: 10px;

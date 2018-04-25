@@ -6,11 +6,11 @@ block content
             h1= title
         h1.col-lg-12
             if offering.signed
-            span.badge.badge-default='[signed]'
+                span.badge.badge-default='[signed]'
             if offering.authentic
-            span.badge.badge-default='[authentic]'
+                span.badge.badge-default='[authentic]'
             if offering.gameWorn
-            span.badge.badge-default='[game worn]'
+                span.badge.badge-default='[game worn]'
             span.badge.badge-default='['+offering.itemYear+']'
 
     div
@@ -22,25 +22,31 @@ block content
             h2= 'Questions'
             a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/question/new') Add a New Question
         .col-lg-12
-            ul
-            each question in offering.questions
-                li= question.questionText
-                li= question.answer
-                form.form-horizontal(action="/offering/"+offering._id+"/question/"+question._id+"/answer", method="post", role="form")
-                    .form-group
-                        .col-sm-10 
-                            textarea#answer.form-control(name="answer", cols="30", rows="3")
-                    button.btn.btn-secondary.pull-right Answer Question 
+            ul(style="list-style:none;")
+                each question in offering.questions
+                    li.question
+                        b= question.questionText
+                    if question.answer
+                        li.question= question.answer
+                    else 
+                        form.form-horizontal(action="/offering/"+offering._id+"/question/"+question._id+"/answer", method="post", role="form", style="margin-bottom:10px;")
+                            .form-group
+                                .col-sm-10 
+                                    textarea#answer.form-control(name="answer", cols="30", rows="3")
+                            button.btn.btn-secondary.pull-right Answer Question 
 
     .row
         .col-lg-12
             h2= 'Past Bids'
             ul
             each bid in offering.bids
-                li='$'+bid.amount
+                li='$'+bid.amount+' made by: '+bid.username
 
     .row
         .col-lg-12.offering-info
-            h2= 'Current Bid: $'+currentBid.amount
-            a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/bid') Bid on Offering
-            a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/accept') Accept Bid
+            if offering.available && currentBid
+                h2= 'Current Bid: $'+currentBid.amount+' made by: '+bid.username
+                a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/bid') Bid on Offering
+                a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/accept') Accept Bid
+            else if currentBid
+                h2= 'Accepted Bid: $'+currentBid.amount+' made by: '+currentBid.username

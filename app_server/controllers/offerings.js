@@ -49,11 +49,15 @@ var renderOfferingDetailPage = function(req, res, responseBody){
     message = "API lookup error";
     responseBody = {};
   }
-  res.render('offerings-info', { 
-        title: responseBody.playerName,
-        offering:  responseBody,
-        currentBid: responseBody.bids[responseBody.bids.length - 1]
-    });
+  data = { 
+    title: responseBody.playerName,
+    offering:  responseBody,
+    currentBid: null
+  }
+  if (responseBody.bids.length > 0) {
+      data.currentBid = responseBody.bids[responseBody.bids.length - 1]
+  }
+  res.render('offerings-info', data);
 };
 
 /* Detailed page of a single offering with navigation to other pages */
