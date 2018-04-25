@@ -12,6 +12,7 @@ router.get('/offering/past', controlOffering.offeringPast);
 
 router.get('/offering/:offeringid/question/new', controlOffering.questionNew);
 router.post('/offering/:offeringid/question/new', controlOffering.addQuestion);
+router.post('/offering/:offeringid/question/:questionid/answer', controlOffering.answerQuestion);
 router.get('/offering/:offeringid/bid', controlOffering.bidNew);
 router.post('/offering/:offeringid/bid', controlOffering.addBid);
 

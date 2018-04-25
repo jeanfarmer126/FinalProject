@@ -134,6 +134,40 @@ module.exports.addQuestion = function(req, res){
   }
 };
 
+module.exports.answerQuestion = function(req, res){
+  var requestOptions, path, offeringid, questionid, postdata;
+  offeringid = req.params.offeringid;
+  questionid = req.params.questionid; 
+  path = "/api/offering/" + offeringid + '/question/' + questionid;
+  postdata = {
+    answer: req.body.answer,
+  };
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "PUT",
+    json : postdata
+  };
+  if (!postdata.answer) {
+    res.redirect('/offering/' + offeringid + '?err=val');
+  }
+  else {
+    request(
+      requestOptions,
+      function(err, response, body) {
+        if (response.statusCode === 200) {
+          res.redirect('/offering/' + offeringid);
+        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+            console.log(body);
+          res.redirect('/offering/' + offeringid + '?err=val');
+        } else {
+          console.log(body);
+          //_showError(req, res, response.statusCode);
+        }
+      }
+    );
+  }
+};
+
 module.exports.addBid = function(req, res){
   var requestOptions, path, offeringid, postdata;
   offeringid = req.params.offeringid;

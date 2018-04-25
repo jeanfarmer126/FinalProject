@@ -21,10 +21,16 @@ block content
         .col-lg-12.offering-info
             h2= 'Questions'
             a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/question/new') Add a New Question
-        ul
-        each question in offering.questions
-            li= question.questionText
-            li= question.answer 
+        .col-lg-12
+            ul
+            each question in offering.questions
+                li= question.questionText
+                li= question.answer
+                form.form-horizontal(action="/offering/"+offering._id+"/question/"+question._id+"/answer", method="post", role="form")
+                    .form-group
+                        .col-sm-10 
+                            textarea#answer.form-control(name="answer", cols="30", rows="3")
+                    button.btn.btn-secondary.pull-right Answer Question 
 
     .row
         .col-lg-12
