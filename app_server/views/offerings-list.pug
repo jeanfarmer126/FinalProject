@@ -12,55 +12,26 @@ block content
    
   .row
     .row.list-group
+    each offering in offerings
       .col-xs-12.list-group-item
         h4
           div.list-group-item-header
-            a(href="/offering") Wizards John Wall
+            a(href='/offering/'+offering._id)= offering.playerName
+            if offering.signed
             span.badge.pull-right.badge-default [signed]
+            if offering.authentic
             span.badge.pull-right.badge-default [authentic]
+            if offering.gameWorn
             span.badge.pull-right.badge-default [game worn]
-            span.badge.pull-right.badge-default [2015]
+            span.badge.pull-right.badge-default= '['+offering.itemYear+']'
 
           .list-group-item-content
-            p.concatDetail Signed Jersey worn by John Wall in 2015
-            p.concatDetail John Wall is the starting PG for the Washington Wizards
+            p.concatDetail= offering.itemDescription
+            p.concatDetail= offering.athleteInfo
             
             p
-              a.btn.btn-secondary(style="margin: 10px", href="/offering/bid") Bid on Offering
+              a.btn.btn-secondary(style="margin: 10px", href="/offering/#{offering._id}/bid") Bid on Offering
                 | &nbsp;
-
-      .col-xs-12.list-group-item
-        h4
-          .list-group-item-header
-            a(href="/offering") Cavaliers Kevin Love
-            span.badge.pull-right.badge-default [unsigned]
-            span.badge.pull-right.badge-default [authentic]
-            span.badge.pull-right.badge-default [2017]
-
-          .list-group-item-content
-            p.concatDetail Kevin Love Jersey from 2017
-            p.concatDetail Kevin Love is the starting Center for the Cleveland Cavaliers
-            
-            p
-              a.btn.btn-secondary(style="margin: 10px", href="/offering/bid") Bid on Offering
-                | &nbsp;
-
-      .col-xs-12.list-group-item
-        h4
-          .list-group-item-header
-            a(href="/offering") Knicks Carmelo Anthony
-            span.badge.pull-right.badge-default [unsigned]
-            span.badge.pull-right.badge-default [knockoff]
-            span.badge.pull-right.badge-default [2013]
-
-          .list-group-item-content
-            p.concatDetail Bootleg Carmelo Anthony Jersey for the New York Knicks
-            p.concatDetail Carmelo Anthony currently plays Small Forward for the Oklahoma City Thunder
-            
-            p
-              a.btn.btn-secondary(style="margin: 10px", href="/offering/bid") Bid on Offering
-                | &nbsp;
-
 
   .row
     .col-xs-12

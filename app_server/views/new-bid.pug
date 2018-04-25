@@ -6,7 +6,7 @@ block content
             h1 Add a New Bid
     .row
       .col-xs-12.col-md-6
-        form.form-horizontal(action="/offering", method="get", role="form")
+        form.form-horizontal(action="/offering/"+offeringid+"/bid", method="post", role="form")
           .form-group
             label.col-xs-12.control-label(for="name") Name of Bidder
             .col-xs-12.col-sm-10
@@ -14,11 +14,11 @@ block content
           .form-group
             label.col-xs-12.control-label(for="password") Password of Bidder
             .col-xs-12.col-sm-10
-              input#password.form-control(password="password")
+              input#password.form-control(name="password")
           .form-group
             label.col-xs-12.control-label(for="amount") Bid Amount ($USD)
             .col-xs-12.col-sm-10
-              input#amount.form-control(amount="amount")
+              input#amount.form-control(name="amount")
           .form-group
             label.col-xs-12.control-label(for="additional") Additional Information
             .col-sm-10

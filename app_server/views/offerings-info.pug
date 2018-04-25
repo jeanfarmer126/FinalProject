@@ -5,31 +5,36 @@ block content
         .col-lg-12
             h1= title
         h1.col-lg-12
+            if offering.signed
             span.badge.badge-default='[signed]'
+            if offering.authentic
             span.badge.badge-default='[authentic]'
+            if offering.gameWorn
             span.badge.badge-default='[game worn]'
-            span.badge.badge-default='[2015]'
+            span.badge.badge-default='['+offering.itemYear+']'
 
     div
-        p='Signed Jersey worn by John Wall in 2015'
-        p='John Wall is the starting PG for the Washington Wizards'
+        p= offering.itemDescription
+        p= offering.athleteInfo
 
     .row
         .col-lg-12.offering-info
             h2= 'Questions'
-            a.btn.btn-default.btn-secondary.pull-right(href='/offering/question/new') Add a New Question
+            a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/question/new') Add a New Question
         ul
-            li='Are there any stains?' 
+        each question in offering.questions
+            li= question.questionText
+            li= question.answer 
 
     .row
         .col-lg-12
             h2= 'Past Bids'
             ul
-                li='$80'
-                li='$100'
+            each bid in offering.bids
+                li='$'+bid.amount
 
     .row
         .col-lg-12.offering-info
-            h2= 'Current Bid: $120'
-            a.btn.btn-default.btn-secondary.pull-right(href='/offering/bid') Bid on Offering
-            a.btn.btn-default.btn-secondary.pull-right(href='/offering/accept') Accept Bid
+            h2= 'Current Bid: $'+currentBid.amount
+            a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/bid') Bid on Offering
+            a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/accept') Accept Bid

@@ -5,13 +5,15 @@ var controlOther = require('../controllers/others');
 
 /* Offerings Pages */
 router.get('/', controlOffering.offeringList);
-router.get('/offering', controlOffering.offeringDetail);
+router.get('/offering/:offeringid', controlOffering.offeringDetail);
 router.get('/offering/new', controlOffering.offeringNew);
-router.get('/offering/accept', controlOffering.offeringAccept);
+router.get('/offering/:offeringid/accept', controlOffering.offeringAccept);
 router.get('/offering/past', controlOffering.offeringPast);
 
-router.get('/offering/question/new', controlOffering.questionNew);
-router.get('/offering/bid', controlOffering.bidNew);
+router.get('/offering/:offeringid/question/new', controlOffering.questionNew);
+router.post('/offering/:offeringid/question/new', controlOffering.addQuestion);
+router.get('/offering/:offeringid/bid', controlOffering.bidNew);
+router.post('/offering/:offeringid/bid', controlOffering.addBid);
 
 /* Other Pages */
 router.get('/about', controlOther.about)

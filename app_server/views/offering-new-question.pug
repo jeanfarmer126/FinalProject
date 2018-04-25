@@ -4,7 +4,7 @@ block content
     .row.page-header
         .col-lg-12
             h1 Submit a Question
-            form.form-horizontal(action="/offering", method="post", role="form")
+            form.form-horizontal(action="/offering/"+offeringid+"/question/new", method="post", role="form")
                 .form-group
                     .col-sm-10 
                         textarea#question.form-control(name="question", cols="30", rows="10")
