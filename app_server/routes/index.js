@@ -5,8 +5,8 @@ var controlOther = require('../controllers/others');
 
 /* Offerings Pages */
 router.get('/', controlOffering.offeringList);
-router.get('/offering/:offeringid', controlOffering.offeringDetail);
 router.get('/offering/new', controlOffering.offeringNew);
+router.get('/offering/:offeringid', controlOffering.offeringDetail);
 router.get('/offering/:offeringid/accept', controlOffering.offeringAccept);
 router.get('/offering/past', controlOffering.offeringPast);
 
