@@ -41,13 +41,14 @@ block content
           div.list-group-item-header
             a(href='/offering/'+offering._id)= offering.playerName
             if offering.signed
-              span.badge.pull-right.badge-default [signed]
+              span.badge.pull-right.badge-default signed
             if offering.authentic
-              span.badge.pull-right.badge-default [authentic]
+              span.badge.pull-right.badge-default authentic
             if offering.gameWorn
-              span.badge.pull-right.badge-default [game worn]
-            span.badge.pull-right.badge-default= '['+offering.itemYear+']'
-            span.badge.pull-right.badge-default= '['+offering.offererUser+']'
+              span.badge.pull-right.badge-default game worn
+            span.badge.pull-right.badge-default= offering.itemYear
+            span.badge.pull-right.badge-default= offering.offererUser
+            span.badge.pull-right.badge-default= offering.created
 
           .list-group-item-content
             p.concatDetail= offering.itemDescription

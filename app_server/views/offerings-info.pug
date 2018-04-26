@@ -6,12 +6,12 @@ block content
             h1= title
         h1.col-lg-12
             if offering.signed
-                span.badge.badge-default='[signed]'
+                span.badge.badge-default='signed'
             if offering.authentic
-                span.badge.badge-default='[authentic]'
+                span.badge.badge-default='authentic'
             if offering.gameWorn
-                span.badge.badge-default='[game worn]'
-            span.badge.badge-default='['+offering.itemYear+']'
+                span.badge.badge-default='game worn'
+            span.badge.badge-default=offering.itemYear
 
     div
         p= offering.itemDescription

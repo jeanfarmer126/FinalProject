@@ -47,7 +47,6 @@ module.exports.offeringsPast = function (req, res) {
 var buildOfferingList = function(req, res, results) {
   var offerings = [];
   results.forEach(function(doc) {
-    console.log(Date(doc.created).toString().split("T"));
     let date = new Date(doc.created);
     data = {
       playerName: doc.playerName,
