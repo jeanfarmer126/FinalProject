@@ -16,10 +16,18 @@ var renderOfferingsPage = function(req, res, responseBody){
     if (!responseBody.length) {
       message = "No courses found";
     }
+    else if (!req.query.all) {
+        for (var i = responseBody.length - 1; i >= 0; i--) {
+            if (!responseBody[i].available) {
+                responseBody.splice(i,1)
+            }
+        }
+    }
   }
   res.render('offerings-list', { 
         title: 'Offerings',
-        offerings:  responseBody
+        offerings:  responseBody,
+        all: (req.query.all == 'true')
     });
 };
 

@@ -8,10 +8,21 @@ block content
         small Trade Jersey's with your classmates!
       .col(style="float:right;padding:0px;")
         a.btn.btn-default.btn-secondary.page-btn(href="/offering/new") + Add An Offering
-        a.btn.btn-default.btn-secondary.page-btn(href="/offering/past") + Show Past Offerings
+        if (all)
+          a.btn.btn-default.btn-secondary.page-btn(href="/") Show Available Offerings
+        else
+          a.btn.btn-default.btn-secondary.page-btn(href="/?all=true") Show Past Offerings
+
+  if offerings.length == 0 && !all
+    .row
+      .col
+        h3="No available offerings, add a new offer or click on 'Show Past Offerings' to see accepted offers"
+  if offerings.length == 0 && all
+    .row
+      .col
+        h3="No current or accepted offers, add a new offer"
    
-  .row
-    .row.list-group
+  .row.list-group
     each offering in offerings
       .col-xs-12.list-group-item
         h4
@@ -29,13 +40,7 @@ block content
             p.concatDetail= offering.itemDescription
             p.concatDetail= offering.athleteInfo
             
-            p
-              a.btn.btn-secondary(style="margin: 10px", href="/offering/"+offering._id+"/bid") Bid on Offering
-                | &nbsp;
-
-  .row
-    .col-xs-12
-      .row.footer-detail
-        h1
-          p To find previous offers, click "Show Past Offerings"
-          p To bid on an offer, click "Bid on Offering"
+            if (offering.available)
+              p
+                a.btn.btn-secondary(style="margin: 10px", href="/offering/"+offering._id+"/bid") Bid on Offering
+                  | &nbsp;
