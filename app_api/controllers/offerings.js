@@ -26,6 +26,24 @@ module.exports.offerings = function (req, res) {
         });
 };
 
+module.exports.offeringsPast = function (req, res) {
+    offering
+        .find({}, '-questions -bids', function (err, docs) {
+            if (!docs) {
+              sendJsonResponse(res, 404, {
+                 "message": "offerings not found"
+              });
+              return;
+            }
+            else if (err) {
+              sendJsonResponse(res, 404, err);
+              return;
+            }
+            offerings = buildOfferingList(req, res, docs);
+            sendJsonResponse(res, 200, offerings);
+        });
+};
+
 var buildOfferingList = function(req, res, results) {
   var offerings = [];
   results.forEach(function(doc) {

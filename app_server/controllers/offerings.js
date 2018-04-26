@@ -14,7 +14,7 @@ var renderOfferingsPage = function(req, res, responseBody){
     responseBody = [];
   } else {
     if (!responseBody.length) {
-      message = "No courses found";
+      message = "No offerings found";
     }
     else if (!req.query.all) {
         for (var i = responseBody.length - 1; i >= 0; i--) {
@@ -29,6 +29,30 @@ var renderOfferingsPage = function(req, res, responseBody){
         offerings:  responseBody,
         all: (req.query.all == 'true')
     });
+};
+
+var renderPreviousOfferingsPage = function(req, res, responseBody){
+  var message;
+  if (!(responseBody instanceof Array)) {
+    message = "API lookup error";
+    responseBody = [];
+  } else {
+    if (!responseBody.length) {
+      message = "No offerings found";
+    }
+    else if (!req.query.all) {
+      for (var i = responseBody.length - 1; i >= 0; i--) {
+        if (responseBody[i].available) {
+          responseBody.splice(i,1)
+        }
+      }
+    }
+  }
+  res.render('past-offerings', { 
+      title: 'Past Offerings',
+      offerings:  responseBody,
+      all: (req.query.all == 'true')
+  });
 };
 
 /* GET 'home' page */
@@ -47,6 +71,25 @@ module.exports.offeringList = function(req, res){
       var i, data;
       data = body;
       renderOfferingsPage(req, res, data);
+    }
+  );
+};
+
+module.exports.offeringListPrevious = function(req, res){
+  var requestOptions, path;
+  path = '/api/';
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      var i, data;
+      data = body;
+      renderPreviousOfferingsPage(req, res, data);
     }
   );
 };
@@ -108,10 +151,6 @@ module.exports.offeringAccept = function(req, res){
     res.render('accept-offering', {title: 'Accept Offer', offeringid: req.params.offeringid});
 };
 
-/* Page for sortable offers from the past (pretty much the same page as the landing page) */
-module.exports.offeringPast = function(req, res){
-    res.render('past-offerings', {title: 'Past Offers'});
-};
 
 module.exports.addQuestion = function(req, res){
   var requestOptions, path, offeringid, postdata;

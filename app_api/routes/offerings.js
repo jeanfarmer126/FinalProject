@@ -5,6 +5,7 @@ var ctrlOfferings = require('../controllers/offerings');
 router.get('/', ctrlOfferings.offerings);
 router.get('/offering/:offeringid', ctrlOfferings.viewOffering);
 router.post('/offering/new', ctrlOfferings.addOffering);
+router.get('/offering/past', ctrlOfferings.offeringsPast);
 
 
 router.post('/offering/:offeringid/question/add', ctrlOfferings.addQuestion);
