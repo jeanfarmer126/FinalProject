@@ -31,6 +31,8 @@ var renderOfferingsPage = function(req, res, responseBody){
         title: 'Offerings',
         offerings:  responseBody,
         all: (req.query.all == 'true')
+        sortOfferer: (req.query.sortOfferer == 'true')
+        sortDate: (req.query.sortDate == 'true')
     });
 };
 

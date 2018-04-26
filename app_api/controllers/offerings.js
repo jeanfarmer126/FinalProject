@@ -66,6 +66,15 @@ var buildOfferingList = function(req, res, results) {
     }
     offerings.push(data);
   });
+
+  if (req.query.sortOfferer) {
+    offerings.sort(function(a,b) {
+      var offererA = a.offererUser.toUpperCase();
+      var offererB = b.offererUser.toUpperCase();
+      return (offererA < offererB) ? -1 : (offererA > offererB) ? 1 : 0;
+    });
+  }
+
   return offerings;
 };
 
