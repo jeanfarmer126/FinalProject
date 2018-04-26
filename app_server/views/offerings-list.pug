@@ -4,10 +4,14 @@ block content
   #banner.page-header
     .row
       .col
-        h1=title
+        if (!all)
+          h1=title
+        else
+          h1="Past Offerings"
         small Trade Jersey's with your classmates!
       .col(style="float:right;padding:0px;")
-        a.btn.btn-default.btn-secondary.page-btn(href="/offering/new") + Add An Offering
+        if (!all)
+          a.btn.btn-default.btn-secondary.page-btn(href="/offering/new") + Add An Offering
         if (all)
           a.btn.btn-default.btn-secondary.page-btn(href="/") Show Available Offerings
         else
@@ -35,6 +39,7 @@ block content
             if offering.gameWorn
               span.badge.pull-right.badge-default [game worn]
             span.badge.pull-right.badge-default= '['+offering.itemYear+']'
+            span.badge.pull-right.badge-default= '['+offering.offererUser+']'
 
           .list-group-item-content
             p.concatDetail= offering.itemDescription
@@ -43,7 +48,13 @@ block content
               p.concatDetail= 'Current Bid: $'+offering.currentBid
             if !offering,available && offering.currentBid
               p.concatDetail= 'Bought for: $'+offering.currentBid
-            if (offering.available)
+            if (offering.available && !all)
               p
                 a.btn.btn-secondary(style="margin: 10px", href="/offering/"+offering._id+"/bid") Bid on Offering
                   | &nbsp;
+  if (all)
+    .row
+      .col-xs-12
+        .row.footer-detail
+          h1
+            p To find current offers, click "Show Current Offerings"
