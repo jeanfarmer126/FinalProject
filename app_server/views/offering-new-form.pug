@@ -9,22 +9,28 @@ block content
         - if (error === "val")
              .alert.alert-danger(role="alert") All fields required, please try again
         .form-group
-            label(for='name')= 'Player Name: '
-            input.form-control(id='name', name='name')
+            label(for='offererUser')= 'Offerer Name: '
+            input.form-control(id='offererUser', name='offererUser')
         .form-group
-            label(for='year')= 'Item Year: '
-            input.form-control(id='year', name='year')
+            label(for='offererPass')= 'Offerer Password: '
+            input.form-control(id='offererPass', name='offererPass')
+        .form-group
+            label(for='playerName')= 'Player Name: '
+            input.form-control(id='playerName', name='playerName')
+        .form-group
+            label(for='itemYear')= 'Item Year: '
+            input.form-control(id='itemYear', name='itemYear')
         .form-group
             label(for='signed')= 'Signed: '
             input.form-control(type='checkbox', name='signed', id='signed')
             label(for='authentic')= 'Authentic: '
             input.form-control(type='checkbox', name='authentic', id='authentic')
-            label(for='game_Worn')= 'Game Worn: '
-            input.form-control(type='checkbox', name='game_worn', id='game_worn')
+            label(for='gameWorn')= 'Game Worn: '
+            input.form-control(type='checkbox', name='gameWorn', id='gameWorn')
         .form-group
-            label(for='description')= 'Item Description: '
-            input.form-control(id='description', name='description')
+            label(for='itemDescription')= 'Item Description: '
+            input.form-control(id='itemDescription', name='itemDescription')
         .form-group
-            label(for='athlete_info')= 'Athlete Info: '
-            input.form-control(id='athlete_info', name='athlete_info')
+            label(for='athleteInfo')= 'Athlete Info: '
+            input.form-control(id='athleteInfo', name='athleteInfo')
         button.btn.btn-secondary.pull-right(type='submit') Add

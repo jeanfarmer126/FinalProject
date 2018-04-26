@@ -82,7 +82,7 @@ module.exports.offeringDetail = function(req, res){
 
 /* Page for adding a new offering with fields */
 module.exports.offeringNew = function(req, res){
-    res.render('offering-new-form', {title: 'New Offer'});
+  res.render('offering-new-form', {title: 'New Offer'});
 };
 
 /* Page for adding a new question with fields */
@@ -206,3 +206,44 @@ module.exports.addBid = function(req, res){
     );
   }
 };
+
+module.exports.addOffering = function(req, res) {
+  var requestOptions;
+  var path;
+  var postData;
+  path = "/api/offering/new";
+  postData = {
+    playerName: req.body.playerName,
+    itemYear: req.body.itemYear,
+    signed: req.body.signed === '1',
+    authentic: req.body.authentic === '1',
+    gameWorn: req.body.gameWorn === '1',
+    itemDescription: req.body.itemDescription,
+    athleteInfo: req.body.athleteInfo,
+    offererUser: req.body.offererUser,
+    offererPass: req.body.offererPass
+  };
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "POST",
+    json : postData
+  };
+  if (!postData.playerName || !postData.itemYear || !postData.itemDescription || !postData.athleteInfo || !postData.offererUser || !postData.offererPass) {
+    res.redirect('/offering/new?err=val');
+  }
+  else {
+    request(
+      requestOptions,
+      function(err, response, body) {
+        if (response.statusCode === 201) {
+          res.redirect('/');
+        } else if (response.statusCode === 400 && body.playerName && body.playerName === "ValidationError" ) {
+          console.log(body);
+          res.redirect('/offering/new?err=val');
+        } else {
+          console.log(body);
+        }
+      }
+    );
+  }
+}

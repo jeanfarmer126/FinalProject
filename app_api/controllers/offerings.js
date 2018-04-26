@@ -59,12 +59,14 @@ module.exports.addOffering = function (req, res) {
   }, function(err, offering) {
     if (err) {
       console.log(err);
+      console.log(offering);
       sendJsonResponse(res, 400, err);
     } else {
       sendJsonResponse(res, 201, offering);
     }
   });
 };
+
 module.exports.viewOffering = function (req, res) {
     if (req.params && req.params.offeringid) {
         offering
@@ -179,7 +181,7 @@ var doAddBid = function(req, res, offering) {
 };
 
 module.exports.answerQuestion = function (req, res) {
-if (!req.params.offeringid || !req.params.questionid) {
+  if (!req.params.offeringid || !req.params.questionid) {
     sendJsonResponse(res, 404, {
       "message": "Not found, offeringid and questionid are both required"
     });

@@ -15,6 +15,7 @@ router.post('/offering/:offeringid/question/new', controlOffering.addQuestion);
 router.post('/offering/:offeringid/question/:questionid/answer', controlOffering.answerQuestion);
 router.get('/offering/:offeringid/bid', controlOffering.bidNew);
 router.post('/offering/:offeringid/bid', controlOffering.addBid);
+router.post('/offering/new', controlOffering.addOffering);
 
 /* Other Pages */
 router.get('/about', controlOther.about)
