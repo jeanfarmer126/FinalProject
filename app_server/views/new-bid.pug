@@ -9,6 +9,10 @@ block content
         form.form-horizontal(action="/offering/"+offeringid+"/bid", method="post", role="form")
           if (error === "auth")
              .alert.alert-danger(role="alert") Offerer cannot bid on their own items
+          if (error === "amount")
+             .alert.alert-danger(role="alert") You must bid higher than the current bid
+          if (error === "val")
+             .alert.alert-danger(role="alert") Username, Password, and Amount are all required
           .form-group
             label.col-xs-12.control-label(for="name") Name of Bidder
             .col-xs-12.col-sm-10

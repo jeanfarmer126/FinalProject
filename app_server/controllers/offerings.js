@@ -68,7 +68,6 @@ var renderOfferingDetailPage = function(req, res, responseBody){
   if (responseBody.bids.length > 0) {
       data.currentBid = responseBody.bids[responseBody.bids.length - 1]
   }
-  console.log(data);
   res.render('offerings-info', data);
 };
 
@@ -99,7 +98,7 @@ module.exports.offeringNew = function(req, res){
 
 /* Page for adding a new question with fields */
 module.exports.questionNew = function(req, res){
-    res.render('offering-new-question', {title: 'New Question', offeringid: req.params.offeringid});
+    res.render('offering-new-question', {title: 'New Question', offeringid: req.params.offeringid, error: req.query.err});
 };
 
 /* Page for adding a new bid with fields */
@@ -108,8 +107,44 @@ module.exports.bidNew = function(req, res){
 };
 
 /* Page for accepting an offer (navigate by clicking button on offer detail page) */
+var renderOfferingAcceptPage = function(req, res, responseBody){
+  var message;
+  if (!(responseBody instanceof Object)) {
+    message = "API lookup error";
+    responseBody = {};
+  }
+  data = { 
+    title: 'Accept Offer',
+    offeringid:  responseBody._id,
+    currentBid: null,
+    error: req.query.err
+  }
+  if (responseBody.bids.length > 0) {
+      data.currentBid = responseBody.bids[responseBody.bids.length - 1].amount
+  }
+  else {
+    res.redirect("/offering"+responseBody._id);
+  }
+  res.render('accept-offering', data);
+}
+
 module.exports.offeringAccept = function(req, res){
-    res.render('accept-offering', {title: 'Accept Offer', offeringid: req.params.offeringid});
+  var requestOptions, path;
+  path = '/api/offering/' + req.params.offeringid;
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      var i, data;
+      data = body;
+      renderOfferingAcceptPage(req, res, data);
+    }
+  );
 };
 
 /* Page for sortable offers from the past (pretty much the same page as the landing page) */
@@ -138,7 +173,7 @@ module.exports.addQuestion = function(req, res){
       function(err, response, body) {
         if (response.statusCode === 201) {
           res.redirect('/offering/' + offeringid);
-        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+        } else if (response.statusCode === 400 && body.message && body.message === "ValidationError" ) {
             console.log(body);
           res.redirect('/offering/' + offeringid + '/question/new?err=val');
         } else {
@@ -172,7 +207,7 @@ module.exports.answerQuestion = function(req, res){
       function(err, response, body) {
         if (response.statusCode === 200) {
           res.redirect('/offering/' + offeringid);
-        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+        } else if (response.statusCode === 400 && body.message && body.message === "ValidationError" ) {
             console.log(body);
           res.redirect('/offering/' + offeringid + '?err=val');
         } else {
@@ -210,6 +245,12 @@ module.exports.addBid = function(req, res){
         } else if (response.statusCode === 400 && body.message && body.message === "AuthenticationError" ) {
             console.log(body);
           res.redirect('/offering/' + offeringid + '/bid?err=auth');
+        } else if (response.statusCode === 400 && body.message && body.message === "ValidationError" ) {
+            console.log(body);
+          res.redirect('/offering/' + offeringid + '/bid?err=val');
+        } else if (response.statusCode === 400 && body.message && body.message === "BidAmountError" ) {
+            console.log(body);
+          res.redirect('/offering/' + offeringid + '/bid?err=amount');
         } else {
           console.log(body);
           //_showError(req, res, response.statusCode);
@@ -233,7 +274,7 @@ module.exports.doAcceptBid = function(req, res){
     json : postdata
   };
   if (!postdata.username || !postdata.password) {
-    res.redirect('/offering/' + offeringid + '?err=val');
+    res.redirect('/offering/' + offeringid + '/accept?err=val');
   }
   else {
     request(
@@ -241,9 +282,8 @@ module.exports.doAcceptBid = function(req, res){
       function(err, response, body) {
         if (response.statusCode === 200) {
           res.redirect('/offering/' + offeringid);
-        } else if (response.statusCode === 400 && body.name && body.name === "AuthenticationError" ) {
-            console.log(body);
-          res.redirect('/offering/' + offeringid + '/bid/accept/?err=auth');
+        } else if (response.statusCode === 400 && body.message && body.message === "AuthenticationError" ) {
+          res.redirect('/offering/' + offeringid + '/accept?err=auth');
         } else {
           console.log(body);
           //_showError(req, res, response.statusCode);
@@ -289,6 +329,9 @@ module.exports.addOffering = function(req, res) {
         } else if (response.statusCode === 400 && body.playerName && body.playerName === "ValidationError" ) {
           console.log(body);
           res.redirect('/offering/new?err=val');
+        } else if (response.statusCode === 400 && body.playerName && body.playerName === "AuthenticationError" ) {
+          console.log(body);
+          res.redirect('/offering/new?err=auth');
         } else {
           console.log(body);
         }

@@ -171,6 +171,10 @@ var doAddBid = function(req, res, offering) {
       sendJsonResponse(res, 400, {"message" : "AuthenticationError"});
       return;
     }
+    if (offering.bids.length > 0 && offering.bids[offering.bids.length - 1].amount > req.body.amount) {
+      sendJsonResponse(res, 400, {"message" : "BidAmount"});
+      return;
+    }
     else {
     newBid = bid.create({
       username: req.body.username,

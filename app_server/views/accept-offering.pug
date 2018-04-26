@@ -5,9 +5,13 @@ block content
         .col-lg-12
             h1 Accept an Offering
             form.form-horizontal(action='accept', method="post", role="form")
+                if (error === "val")
+                    .alert.alert-danger(role="alert") Offerer username and password are required
+                if (error === "auth")
+                    .alert.alert-danger(role="alert") Credentials do not match the owner of the offering
                 .form-group
                     label.col-xs-10
-                        h1(style="margin:30px") Bid Amount: $5,000
+                        h1(style="margin:30px")= 'Bid Amount: $'+currentBid
                         .form-group
                             label.col-xs-12.control-label(for="password") Username of Offerer
                             .col-xs-12.col-sm-10
