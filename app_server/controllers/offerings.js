@@ -16,9 +16,12 @@ var renderOfferingsPage = function(req, res, responseBody){
     if (!responseBody.length) {
       message = "No courses found";
     }
-    else if (!req.query.all) {
-        for (var i = responseBody.length - 1; i >= 0; i--) {
-            if (!responseBody[i].available) {
+    else {
+      for (var i = responseBody.length - 1; i >= 0; i--) {
+            if (!req.query.all && !responseBody[i].available) {
+                responseBody.splice(i,1)
+            }
+            else if (req.query.all && responseBody[i].available) {
                 responseBody.splice(i,1)
             }
         }
@@ -101,7 +104,7 @@ module.exports.questionNew = function(req, res){
 
 /* Page for adding a new bid with fields */
 module.exports.bidNew = function(req, res){
-    res.render('new-bid', {title: 'New Bid', offeringid: req.params.offeringid});
+    res.render('new-bid', {title: 'New Bid', offeringid: req.params.offeringid, error: req.query.err});
 };
 
 /* Page for accepting an offer (navigate by clicking button on offer detail page) */
@@ -204,9 +207,43 @@ module.exports.addBid = function(req, res){
       function(err, response, body) {
         if (response.statusCode === 201) {
           res.redirect('/offering/' + offeringid);
-        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+        } else if (response.statusCode === 400 && body.message && body.message === "AuthenticationError" ) {
             console.log(body);
-          res.redirect('/offering/' + offeringid + '/bid?err=val');
+          res.redirect('/offering/' + offeringid + '/bid?err=auth');
+        } else {
+          console.log(body);
+          //_showError(req, res, response.statusCode);
+        }
+      }
+    );
+  }
+};
+
+module.exports.doAcceptBid = function(req, res){
+  var requestOptions, path, offeringid, postdata;
+  offeringid = req.params.offeringid;
+  path = "/api/offering/" + offeringid + '/bid/accept';
+  postdata = {
+    username: req.body.name,
+    password: req.body.password
+  };
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "PUT",
+    json : postdata
+  };
+  if (!postdata.username || !postdata.password) {
+    res.redirect('/offering/' + offeringid + '?err=val');
+  }
+  else {
+    request(
+      requestOptions,
+      function(err, response, body) {
+        if (response.statusCode === 200) {
+          res.redirect('/offering/' + offeringid);
+        } else if (response.statusCode === 400 && body.name && body.name === "AuthenticationError" ) {
+            console.log(body);
+          res.redirect('/offering/' + offeringid + '/bid/accept/?err=auth');
         } else {
           console.log(body);
           //_showError(req, res, response.statusCode);

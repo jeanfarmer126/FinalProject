@@ -10,7 +10,7 @@ var sendJsonResponse = function(res, status, content) {
 
 module.exports.offerings = function (req, res) {
     offering
-        .find({}, '-questions -bids', function (err, docs) {
+        .find({}, '-questions', function (err, docs) {
             if (!docs) {
               sendJsonResponse(res, 404, {
                  "message": "offerings not found"
@@ -29,7 +29,7 @@ module.exports.offerings = function (req, res) {
 var buildOfferingList = function(req, res, results) {
   var offerings = [];
   results.forEach(function(doc) {
-    offerings.push({
+    data = {
       playerName: doc.playerName,
       itemYear: doc.itemYear,
       signed: doc.signed,
@@ -40,8 +40,13 @@ var buildOfferingList = function(req, res, results) {
       offererUser: doc.offererUser,
       offererPass: doc.offererPass,
       available: doc.available,
+      currentBid: null,
       _id: doc._id
-    });
+    };
+    if (doc.bids && doc.bids.length > 0) {
+      data.currentBid = doc.bids[doc.bids.length-1].amount;
+    }
+    offerings.push(data);
   });
   return offerings;
 };
@@ -141,7 +146,7 @@ module.exports.addBid = function (req, res) {
   if (req.params.offeringid) {
     offering
       .findById(req.params.offeringid)
-      .select('bids')
+      .select('offererUser offererPass bids')
       .exec(
         function(err, offering) {
           if (err) {
@@ -162,6 +167,11 @@ var doAddBid = function(req, res, offering) {
   if (!offering) {
     sendJsonResponse(res, 404, "offeringid not found");
   } else {
+    if (offering.offererUser == req.body.username && offering.offererPass == req.body.userpassword) {
+      sendJsonResponse(res, 400, {"message" : "AuthenticationError"});
+      return;
+    }
+    else {
     newBid = bid.create({
       username: req.body.username,
       userpassword: req.body.userpassword,
@@ -179,6 +189,7 @@ var doAddBid = function(req, res, offering) {
             }
           });
     });
+    }
   }
 };
 
@@ -230,15 +241,15 @@ module.exports.answerQuestion = function (req, res) {
 };
 
 module.exports.acceptBid = function (req, res) {
-if (!req.params.offeringid || !req.params.bidid) {
+if (!req.params.offeringid) {
     sendJsonResponse(res, 404, {
-      "message": "Not found, offeringid and bidid are both required"
+      "message": "Not found, offeringid id both required"
     });
     return;
   }
   offering
     .findById(req.params.offeringid)
-    .select('bids')
+    .select('offererUser offererPass bids')
     .exec(
       function(err, offering) {
         var thisBid;
@@ -251,11 +262,17 @@ if (!req.params.offeringid || !req.params.bidid) {
           sendJsonResponse(res, 400, err);
           return;
         }
+        if (req.body.username !== offering.offererUser || req.body.password !== offering.offererPass) {
+          sendJsonResponse(res, 400, {
+            "message": 'AuthenticationError'
+          });
+          return;
+        }
         if (offering.bids && offering.bids.length > 0) {
-          thisBid = offering.bids.id(req.params.bidid);
+          thisBid = offering.bids[offering.bids.length - 1];
           if (!thisBid) {
             sendJsonResponse(res, 404, {
-              "message": "bidid not found"
+              "message": "no bid available to accept"
             });
           } else {
             thisBid.accepted = true;

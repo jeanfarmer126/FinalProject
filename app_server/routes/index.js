@@ -8,6 +8,7 @@ router.get('/', controlOffering.offeringList);
 router.get('/offering/new', controlOffering.offeringNew);
 router.get('/offering/:offeringid', controlOffering.offeringDetail);
 router.get('/offering/:offeringid/accept', controlOffering.offeringAccept);
+router.post('/offering/:offeringid/accept', controlOffering.doAcceptBid);
 router.get('/offering/past', controlOffering.offeringPast);
 
 router.get('/offering/:offeringid/question/new', controlOffering.questionNew);
