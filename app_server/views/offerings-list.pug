@@ -11,7 +11,7 @@ block content
         if (all)
           a.btn.btn-default.btn-secondary.page-btn(href="/") Show Available Offerings
         else
-          a.btn.btn-default.btn-secondary.page-btn(href="/offering/past") Show Past Offerings
+          a.btn.btn-default.btn-secondary.page-btn(href="/?all=true") Show Past Offerings
 
   if offerings.length == 0 && !all
     .row
