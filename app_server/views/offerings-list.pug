@@ -39,7 +39,10 @@ block content
           .list-group-item-content
             p.concatDetail= offering.itemDescription
             p.concatDetail= offering.athleteInfo
-            
+            if offering.available && offering.currentBid
+              p.concatDetail= 'Current Bid: $'+offering.currentBid
+            if !offering,available && offering.currentBid
+              p.concatDetail= 'Bought for: $'+offering.currentBid
             if (offering.available)
               p
                 a.btn.btn-secondary(style="margin: 10px", href="/offering/"+offering._id+"/bid") Bid on Offering

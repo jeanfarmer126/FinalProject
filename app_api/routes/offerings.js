@@ -11,7 +11,7 @@ router.get('/offering/past', ctrlOfferings.offeringsPast);
 router.post('/offering/:offeringid/question/add', ctrlOfferings.addQuestion);
 router.put('/offering/:offeringid/question/:questionid', ctrlOfferings.answerQuestion);
 router.post('/offering/:offeringid/bid/add', ctrlOfferings.addBid);
-router.put('/offering/:offeringid/bid/:bidid', ctrlOfferings.acceptBid);
+router.put('/offering/:offeringid/bid/accept', ctrlOfferings.acceptBid);
 
 
 module.exports = router;

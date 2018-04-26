@@ -16,9 +16,12 @@ var renderOfferingsPage = function(req, res, responseBody){
     if (!responseBody.length) {
       message = "No offerings found";
     }
-    else if (!req.query.all) {
-        for (var i = responseBody.length - 1; i >= 0; i--) {
-            if (!responseBody[i].available) {
+    else {
+      for (var i = responseBody.length - 1; i >= 0; i--) {
+            if (!req.query.all && !responseBody[i].available) {
+                responseBody.splice(i,1)
+            }
+            else if (req.query.all && responseBody[i].available) {
                 responseBody.splice(i,1)
             }
         }
@@ -40,19 +43,22 @@ var renderPreviousOfferingsPage = function(req, res, responseBody){
     if (!responseBody.length) {
       message = "No offerings found";
     }
-    else if (!req.query.all) {
+    else {
       for (var i = responseBody.length - 1; i >= 0; i--) {
-        if (responseBody[i].available) {
-          responseBody.splice(i,1)
+            if (!req.query.all && !responseBody[i].available) {
+                responseBody.splice(i,1)
+            }
+            else if (req.query.all && responseBody[i].available) {
+                responseBody.splice(i,1)
+            }
         }
-      }
     }
   }
   res.render('past-offerings', { 
-      title: 'Past Offerings',
-      offerings:  responseBody,
-      all: (req.query.all == 'true')
-  });
+        title: 'Offerings',
+        offerings:  responseBody,
+        all: (req.query.all == 'true')
+    });
 };
 
 /* GET 'home' page */
@@ -75,7 +81,7 @@ module.exports.offeringList = function(req, res){
   );
 };
 
-module.exports.offeringListPrevious = function(req, res){
+module.exports.offeringPast = function(req, res){
   var requestOptions, path;
   path = '/api/';
   requestOptions = {
@@ -108,6 +114,7 @@ var renderOfferingDetailPage = function(req, res, responseBody){
   if (responseBody.bids.length > 0) {
       data.currentBid = responseBody.bids[responseBody.bids.length - 1]
   }
+  console.log(data);
   res.render('offerings-info', data);
 };
 
@@ -143,7 +150,7 @@ module.exports.questionNew = function(req, res){
 
 /* Page for adding a new bid with fields */
 module.exports.bidNew = function(req, res){
-    res.render('new-bid', {title: 'New Bid', offeringid: req.params.offeringid});
+    res.render('new-bid', {title: 'New Bid', offeringid: req.params.offeringid, error: req.query.err});
 };
 
 /* Page for accepting an offer (navigate by clicking button on offer detail page) */
@@ -242,9 +249,43 @@ module.exports.addBid = function(req, res){
       function(err, response, body) {
         if (response.statusCode === 201) {
           res.redirect('/offering/' + offeringid);
-        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
+        } else if (response.statusCode === 400 && body.message && body.message === "AuthenticationError" ) {
             console.log(body);
-          res.redirect('/offering/' + offeringid + '/bid?err=val');
+          res.redirect('/offering/' + offeringid + '/bid?err=auth');
+        } else {
+          console.log(body);
+          //_showError(req, res, response.statusCode);
+        }
+      }
+    );
+  }
+};
+
+module.exports.doAcceptBid = function(req, res){
+  var requestOptions, path, offeringid, postdata;
+  offeringid = req.params.offeringid;
+  path = "/api/offering/" + offeringid + '/bid/accept';
+  postdata = {
+    username: req.body.name,
+    password: req.body.password
+  };
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "PUT",
+    json : postdata
+  };
+  if (!postdata.username || !postdata.password) {
+    res.redirect('/offering/' + offeringid + '?err=val');
+  }
+  else {
+    request(
+      requestOptions,
+      function(err, response, body) {
+        if (response.statusCode === 200) {
+          res.redirect('/offering/' + offeringid);
+        } else if (response.statusCode === 400 && body.name && body.name === "AuthenticationError" ) {
+            console.log(body);
+          res.redirect('/offering/' + offeringid + '/bid/accept/?err=auth');
         } else {
           console.log(body);
           //_showError(req, res, response.statusCode);
@@ -262,20 +303,23 @@ module.exports.addOffering = function(req, res) {
   postData = {
     playerName: req.body.playerName,
     itemYear: req.body.itemYear,
-    signed: req.body.signed === '1',
-    authentic: req.body.authentic === '1',
-    gameWorn: req.body.gameWorn === '1',
+    signed: req.body.signed === 'on',
+    authentic: req.body.authentic === 'on',
+    gameWorn: req.body.gameWorn === 'on',
     itemDescription: req.body.itemDescription,
     athleteInfo: req.body.athleteInfo,
     offererUser: req.body.offererUser,
-    offererPass: req.body.offererPass
+    offererPass: req.body.offererPass,
+    available: true
   };
   requestOptions = {
     url : apiOptions.server + path,
     method : "POST",
     json : postData
   };
-  if (!postData.playerName || !postData.itemYear || !postData.itemDescription || !postData.athleteInfo || !postData.offererUser || !postData.offererPass) {
+  if (!postData.playerName || !postData.itemYear 
+      || !postData.itemDescription || !postData.athleteInfo 
+      || !postData.offererUser || !postData.offererPass) {
     res.redirect('/offering/new?err=val');
   }
   else {

@@ -4,8 +4,16 @@ block content
     .row.page-header
         .col-lg-12
             h1 Accept an Offering
-            form.form-horizontal(action='/offering', method="delete", role="form")
+            form.form-horizontal(action='accept', method="post", role="form")
                 .form-group
                     label.col-xs-10
                         h1(style="margin:30px") Bid Amount: $5,000
+                        .form-group
+                            label.col-xs-12.control-label(for="password") Username of Offerer
+                            .col-xs-12.col-sm-10
+                              input#password.form-control(name="name")
+                        .form-group
+                            label.col-xs-12.control-label(for="password") Password of Offerer
+                            .col-xs-12.col-sm-10
+                              input#password.form-control(name="password")
                         button.btn.btn-secondary.pull-right Accept Bid

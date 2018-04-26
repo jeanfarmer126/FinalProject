@@ -45,7 +45,7 @@ block content
     .row
         .col-lg-12.offering-info
             if offering.available && currentBid
-                h2= 'Current Bid: $'+currentBid.amount+' made by: '+bid.username
+                h2= 'Current Bid: $'+currentBid.amount+' made by: '+currentBid.username
                 a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/bid') Bid on Offering
                 a.btn.btn-default.btn-secondary.pull-right(href='/offering/'+offering._id+'/accept') Accept Bid
             else if currentBid
