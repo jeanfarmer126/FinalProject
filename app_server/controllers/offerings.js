@@ -139,7 +139,7 @@ module.exports.offeringDetail = function(req, res){
 
 /* Page for adding a new offering with fields */
 module.exports.offeringNew = function(req, res){
-  res.render('offering-new-form', {title: 'New Offer'});
+  res.render('offering-new-form', {title: 'New Offer', error: req.query.err});
 };
 
 /* Page for adding a new question with fields */
@@ -368,7 +368,7 @@ module.exports.addOffering = function(req, res) {
       function(err, response, body) {
         if (response.statusCode === 201) {
           res.redirect('/');
-        } else if (response.statusCode === 400 && body.playerName && body.playerName === "ValidationError" ) {
+        } else if (response.statusCode === 400 && body.name && body.name === "ValidationError" ) {
           console.log(body);
           res.redirect('/offering/new?err=val');
         } else if (response.statusCode === 400 && body.playerName && body.playerName === "AuthenticationError" ) {
