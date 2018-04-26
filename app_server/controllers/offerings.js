@@ -65,6 +65,7 @@ var renderOfferingDetailPage = function(req, res, responseBody){
   if (responseBody.bids.length > 0) {
       data.currentBid = responseBody.bids[responseBody.bids.length - 1]
   }
+  console.log(data);
   res.render('offerings-info', data);
 };
 
@@ -223,20 +224,23 @@ module.exports.addOffering = function(req, res) {
   postData = {
     playerName: req.body.playerName,
     itemYear: req.body.itemYear,
-    signed: req.body.signed === '1',
-    authentic: req.body.authentic === '1',
-    gameWorn: req.body.gameWorn === '1',
+    signed: req.body.signed === 'on',
+    authentic: req.body.authentic === 'on',
+    gameWorn: req.body.gameWorn === 'on',
     itemDescription: req.body.itemDescription,
     athleteInfo: req.body.athleteInfo,
     offererUser: req.body.offererUser,
-    offererPass: req.body.offererPass
+    offererPass: req.body.offererPass,
+    available: true
   };
   requestOptions = {
     url : apiOptions.server + path,
     method : "POST",
     json : postData
   };
-  if (!postData.playerName || !postData.itemYear || !postData.itemDescription || !postData.athleteInfo || !postData.offererUser || !postData.offererPass) {
+  if (!postData.playerName || !postData.itemYear 
+      || !postData.itemDescription || !postData.athleteInfo 
+      || !postData.offererUser || !postData.offererPass) {
     res.redirect('/offering/new?err=val');
   }
   else {

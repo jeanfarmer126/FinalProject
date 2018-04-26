@@ -57,7 +57,7 @@ var offeringSchema = new mongoose.Schema({
     itemDescription: {
         type: String
     },
-    altheteInfo: {
+    athleteInfo: {
         type: String
     },
     offererUser: {
@@ -68,7 +68,7 @@ var offeringSchema = new mongoose.Schema({
     },
     available: {
         type: Boolean,
-        defualt: false
+        defualt: true
     },
     bids: [bidSchema],
     questions: [questionSchema]

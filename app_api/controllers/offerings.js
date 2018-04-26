@@ -39,6 +39,7 @@ var buildOfferingList = function(req, res, results) {
       athleteInfo: doc.athleteInfo,
       offererUser: doc.offererUser,
       offererPass: doc.offererPass,
+      available: doc.available,
       _id: doc._id
     });
   });
@@ -49,13 +50,14 @@ module.exports.addOffering = function (req, res) {
   offering.create({
     playerName: req.body.playerName,
     itemYear: req.body.itemYear,
-    signed: req.body.signed === '1',
-    authentic: req.body.authentic === '1',
-    gameWorn: req.body.gameWorn === '1',
+    signed: req.body.signed,
+    authentic: req.body.authentic,
+    gameWorn: req.body.gameWorn,
     itemDescription: req.body.itemDescription,
     athleteInfo: req.body.athleteInfo,
     offererUser: req.body.offererUser,
-    offererPass: req.body.offererPass
+    offererPass: req.body.offererPass,
+    available: true
   }, function(err, offering) {
     if (err) {
       console.log(err);
