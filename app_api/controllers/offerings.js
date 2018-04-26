@@ -58,6 +58,7 @@ var buildOfferingList = function(req, res, results) {
       offererUser: doc.offererUser,
       offererPass: doc.offererPass,
       available: doc.available,
+      created: doc.created,
       currentBid: null,
       _id: doc._id
     };
@@ -66,19 +67,11 @@ var buildOfferingList = function(req, res, results) {
     }
     offerings.push(data);
   });
-
-  if (req.query.sortOfferer) {
-    offerings.sort(function(a,b) {
-      var offererA = a.offererUser.toUpperCase();
-      var offererB = b.offererUser.toUpperCase();
-      return (offererA < offererB) ? -1 : (offererA > offererB) ? 1 : 0;
-    });
-  }
-
   return offerings;
 };
 
 module.exports.addOffering = function (req, res) {
+  var today = new Date();
   offering.create({
     playerName: req.body.playerName,
     itemYear: req.body.itemYear,
@@ -89,6 +82,7 @@ module.exports.addOffering = function (req, res) {
     athleteInfo: req.body.athleteInfo,
     offererUser: req.body.offererUser,
     offererPass: req.body.offererPass,
+    created: today,
     available: true
   }, function(err, offering) {
     if (err) {

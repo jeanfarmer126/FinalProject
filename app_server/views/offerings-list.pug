@@ -14,8 +14,14 @@ block content
           a.btn.btn-default.btn-secondary.page-btn(href="/offering/new") + Add An Offering
         if (all)
           a.btn.btn-default.btn-secondary.page-btn(href="/") Show Available Offerings
-          a.btn.btn-default.btn-secondary.page-btn(href="/?sortDate=true") Sort By Date
-          a.btn.btn-default.btn-secondary.page-btn(href="/?sortOfferer=true") Sort By Offerer
+          if (sortDate)
+            a.btn.btn-default.btn-primary.page-btn(href="/?sortDate=true&all=true") Sort By Date
+          else
+            a.btn.btn-default.btn-secondary.page-btn(href="/?sortDate=true&all=true") Sort By Date
+          if (sortOfferer)
+            a.btn.btn-default.btn-primary.page-btn(href="/?sortOfferer=true&all=true") Sort By Offerer
+          else
+            a.btn.btn-default.btn-secondary.page-btn(href="/?sortOfferer=true&all=true") Sort By Offerer
         else
           a.btn.btn-default.btn-secondary.page-btn(href="/?all=true") Show Past Offerings
 
@@ -42,6 +48,7 @@ block content
               span.badge.pull-right.badge-default [game worn]
             span.badge.pull-right.badge-default= '['+offering.itemYear+']'
             span.badge.pull-right.badge-default= '['+offering.offererUser+']'
+            span.badge.pull-right.badge-default= '['+offering.created+']'
 
           .list-group-item-content
             p.concatDetail= offering.itemDescription

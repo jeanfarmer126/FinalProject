@@ -70,6 +70,10 @@ var offeringSchema = new mongoose.Schema({
         type: Boolean,
         defualt: true
     },
+    created: {
+        type: Date,
+        required: true
+    },
     bids: [bidSchema],
     questions: [questionSchema]
 });

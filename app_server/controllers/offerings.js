@@ -27,11 +27,31 @@ var renderOfferingsPage = function(req, res, responseBody){
         }
     }
   }
+  if (req.query.sortOfferer) {
+    responseBody.sort(function(a,b) {
+      if (!a.offererUser || !b.offererUser) {
+        return 0;
+      }
+      var offererA = a.offererUser.toLowerCase();
+      var offererB = b.offererUser.toLowerCase();
+      return (offererA < offererB) ? -1 : (offererA > offererB) ? 1 : 0;
+    });
+  }
+  if (req.query.sortDate) {
+    responseBody.sort(function(a,b) {
+      if (!a.created || !b.created) {
+        return 0;
+      }
+      var dateA = new Date(a.created);
+      var dateB = new Date(b.created);
+      return (dateA < dateB) ? -1 : (dateA > dateB) ? 1 : 0;
+    });
+  }
   res.render('offerings-list', { 
         title: 'Offerings',
         offerings:  responseBody,
-        all: (req.query.all == 'true')
-        sortOfferer: (req.query.sortOfferer == 'true')
+        all: (req.query.all == 'true'),
+        sortOfferer: (req.query.sortOfferer == 'true'),
         sortDate: (req.query.sortDate == 'true')
     });
 };
@@ -341,6 +361,7 @@ module.exports.addOffering = function(req, res) {
   var requestOptions;
   var path;
   var postData;
+  var today = new Date();
   path = "/api/offering/new";
   postData = {
     playerName: req.body.playerName,
@@ -352,6 +373,7 @@ module.exports.addOffering = function(req, res) {
     athleteInfo: req.body.athleteInfo,
     offererUser: req.body.offererUser,
     offererPass: req.body.offererPass,
+    created: today,
     available: true
   };
   requestOptions = {
@@ -361,7 +383,8 @@ module.exports.addOffering = function(req, res) {
   };
   if (!postData.playerName || !postData.itemYear 
       || !postData.itemDescription || !postData.athleteInfo 
-      || !postData.offererUser || !postData.offererPass) {
+      || !postData.offererUser || !postData.offererPass
+      || !postData.created) {
     res.redirect('/offering/new?err=val');
   }
   else {
