@@ -256,6 +256,7 @@ module.exports.answerQuestion = function(req, res){
   path = "/api/offering/" + offeringid + '/question/' + questionid;
   postdata = {
     answer: req.body.answer,
+    offerName: req.body.offerName
   };
   requestOptions = {
     url : apiOptions.server + path,
@@ -271,9 +272,9 @@ module.exports.answerQuestion = function(req, res){
       function(err, response, body) {
         if (response.statusCode === 200) {
           res.redirect('/offering/' + offeringid);
-        } else if (response.statusCode === 400 && body.message && body.message === "ValidationError" ) {
+        } else if (response.statusCode === 400 && body.message && body.message === "AuthenticationFailed") {
             console.log(body);
-          res.redirect('/offering/' + offeringid + '?err=val');
+            res.redirect('/offering/' + offeringid + '?err=auth');
         } else {
           console.log(body);
           //_showError(req, res, response.statusCode);

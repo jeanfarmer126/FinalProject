@@ -30,10 +30,17 @@ block content
                         li.question= question.answer
                     else 
                         form.form-horizontal(action="/offering/"+offering._id+"/question/"+question._id+"/answer", method="post", role="form", style="margin-bottom:10px;")
+                            - if (error === "val")
+                                .alert.alert-danger(role="alert") All fields required
+                            - if (error === "auth")
+                                .alert.alert-danger(role="alert") Credentials do not match
                             .form-group
                                 .col-sm-10 
                                     textarea#answer.form-control(name="answer", cols="30", rows="3")
-                            button.btn.btn-secondary.pull-right Answer Question 
+                            .form-group
+                                label.col-xs-12.col-sm-2.control-label(for="offerName")= 'Offerer Name: '
+                                input.form-control(id='offerName', name="offerName")
+                            button.btn.btn-secondary.pull-right(type="submit") Answer Question 
 
     .row
         .col-lg-12
