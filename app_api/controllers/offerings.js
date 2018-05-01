@@ -245,7 +245,7 @@ module.exports.answerQuestion = function (req, res) {
         }
         if (offering.offererUser !== req.body.offerName){
           sendJsonResponse(res, 400, {
-            "message": "AuthenticationError"
+            "message": "AuthenticationFailed"
           });
           return;
         }
