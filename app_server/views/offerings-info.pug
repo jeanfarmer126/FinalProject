@@ -35,11 +35,14 @@ block content
                             - if (error === "auth" && id == question._id)
                                 .alert.alert-danger(role="alert") Credentials do not match
                             .form-group
+                                label.col-xs-12.col-sm-2.control-label(for="answer")= 'Answer: '
                                 .col-sm-10 
                                     textarea#answer.form-control(name="answer", cols="30", rows="3")
                             .form-group
                                 label.col-xs-12.col-sm-2.control-label(for="offerName")= 'Offerer Name: '
                                 input.form-control(id='offerName', name="offerName")
+                                label.col-xs-12.col-sm-2.control-label(for="offerPass")= 'Offerer Password: '
+                                input.form-control(id='offerPass', name="offerPass", type='password')
                             button.btn.btn-secondary.pull-right(type="submit") Answer Question 
 
     .row

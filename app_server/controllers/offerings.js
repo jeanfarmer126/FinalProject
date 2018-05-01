@@ -258,14 +258,15 @@ module.exports.answerQuestion = function(req, res){
   path = "/api/offering/" + offeringid + '/question/' + questionid;
   postdata = {
     answer: req.body.answer,
-    offerName: req.body.offerName
+    offerName: req.body.offerName,
+    offerPass: req.body.offerPass
   };
   requestOptions = {
     url : apiOptions.server + path,
     method : "PUT",
     json : postdata
   };
-  if (!postdata.answer | !postdata.offerName) {
+  if (!postdata.answer || !postdata.offerName || !postdata.offerPass) {
     res.redirect('/offering/' + offeringid + '?err=val&id=' + questionid);
   }
   else {

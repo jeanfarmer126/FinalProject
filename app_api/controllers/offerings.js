@@ -228,11 +228,9 @@ module.exports.answerQuestion = function (req, res) {
   }
   offering
     .findById(req.params.offeringid)
-    .select('questions offererUser')
+    .select('questions offererUser offererPass')
     .exec(
       function(err, offering) {
-        console.log(offering.offererUser);
-        console.log(req.body.offerName);
         var thisQuestion;
         if (!offering) {
           sendJsonResponse(res, 404, {
@@ -243,7 +241,7 @@ module.exports.answerQuestion = function (req, res) {
           sendJsonResponse(res, 400, err);
           return;
         }
-        if (offering.offererUser !== req.body.offerName){
+        if (offering.offererUser !== req.body.offerName || offering.offererPass != req.body.offerPass){
           sendJsonResponse(res, 400, {
             "message": "AuthenticationFailed"
           });
