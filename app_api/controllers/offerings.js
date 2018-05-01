@@ -228,9 +228,11 @@ module.exports.answerQuestion = function (req, res) {
   }
   offering
     .findById(req.params.offeringid)
-    .select('questions')
+    .select('questions offererUser')
     .exec(
       function(err, offering) {
+        console.log(offering.offererUser);
+        console.log(req.body.offerName);
         var thisQuestion;
         if (!offering) {
           sendJsonResponse(res, 404, {
@@ -239,6 +241,12 @@ module.exports.answerQuestion = function (req, res) {
           return;
         } else if (err) {
           sendJsonResponse(res, 400, err);
+          return;
+        }
+        if (offering.offererUser !== req.body.offerName){
+          sendJsonResponse(res, 400, {
+            "message": "AuthenticationError"
+          });
           return;
         }
         if (offering.questions && offering.questions.length > 0) {
