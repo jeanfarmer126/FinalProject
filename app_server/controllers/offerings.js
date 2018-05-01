@@ -131,7 +131,9 @@ var renderOfferingDetailPage = function(req, res, responseBody){
   data = { 
     title: responseBody.playerName,
     offering:  responseBody,
-    currentBid: null
+    currentBid: null,
+    error: req.query.err,
+    id: req.query.id
   }
   if (responseBody.bids.length > 0) {
       data.currentBid = responseBody.bids[responseBody.bids.length - 1]
@@ -263,8 +265,8 @@ module.exports.answerQuestion = function(req, res){
     method : "PUT",
     json : postdata
   };
-  if (!postdata.answer) {
-    res.redirect('/offering/' + offeringid + '?err=val');
+  if (!postdata.answer | !postdata.offerName) {
+    res.redirect('/offering/' + offeringid + '?err=val&id=' + questionid);
   }
   else {
     request(
@@ -274,7 +276,7 @@ module.exports.answerQuestion = function(req, res){
           res.redirect('/offering/' + offeringid);
         } else if (response.statusCode === 400 && body.message && body.message === "AuthenticationFailed") {
             console.log(body);
-            res.redirect('/offering/' + offeringid + '?err=auth');
+            res.redirect('/offering/' + offeringid + '?err=auth&id=' + questionid);
         } else {
           console.log(body);
           //_showError(req, res, response.statusCode);
